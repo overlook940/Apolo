@@ -284,12 +284,13 @@ pub fn al_ingles(es: &str) -> Option<&'static str> {
     TABLA.iter().find(|(e, _)| *e == clave).map(|(_, en)| *en)
 }
 
-/// El texto en el idioma actual: en español, tal cual; en inglés, el de la
-/// tabla (o el español si falta, que la prueba no deja pasar).
+/// El texto en el idioma actual: en español, tal cual; en inglés o en chino,
+/// el de la tabla (o el español si falta, que la prueba no deja pasar). El
+/// chino simplificado se apoya en la tabla en inglés (ADR 0025).
 fn traducir(es: &str) -> Option<&'static str> {
     match idioma::actual() {
         Idioma::Es => None,
-        Idioma::En => al_ingles(es),
+        Idioma::En | Idioma::Zh => al_ingles(es),
     }
 }
 

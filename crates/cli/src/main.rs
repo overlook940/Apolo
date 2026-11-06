@@ -55,8 +55,8 @@ struct Orden {
         hide_possible_values = true,
         display_order = 1000,
         help = trs!(
-            "Idioma de los mensajes: es o en (por defecto, el del sistema)",
-            "Language of the messages: es or en (by default, the system's)"
+            "Idioma de los mensajes: es, en o zh (por defecto, el del sistema)",
+            "Language of the messages: es, en or zh (by default, the system's)"
         )
     )]
     idioma: Option<String>,
@@ -330,15 +330,19 @@ fn idioma_de_los_argumentos(
     let leer = |v: Option<&str>| -> Result<Idioma, String> {
         let Some(v) = v else {
             return Err(trs!(
-                "--idioma necesita un idioma: es o en",
-                "--idioma needs a language: es or en"
+                "--idioma necesita un idioma: es, en o zh",
+                "--idioma needs a language: es, en or zh"
             )
             .into());
         };
         match v {
             "es" => Ok(Idioma::Es),
             "en" => Ok(Idioma::En),
-            otro => Err(tr!("--idioma {otro}: es o en", "--idioma {otro}: es or en")),
+            "zh" => Ok(Idioma::Zh),
+            otro => Err(tr!(
+                "--idioma {otro}: es, en o zh",
+                "--idioma {otro}: es, en or zh"
+            )),
         }
     };
     while let Some(a) = args.next() {
@@ -553,6 +557,9 @@ mod pruebas {
         let (v, i) = quitar(&["apolo", "--idioma=es", "jpeg", "a.png"]).unwrap();
         assert_eq!(v, ["apolo", "jpeg", "a.png"]);
         assert_eq!(i, Some(Idioma::Es));
+        let (v, i) = quitar(&["apolo", "--idioma", "zh", "webp", "a.png"]).unwrap();
+        assert_eq!(v, ["apolo", "webp", "a.png"]);
+        assert_eq!(i, Some(Idioma::Zh));
         let (v, i) = quitar(&["apolo", "motores"]).unwrap();
         assert_eq!(v, ["apolo", "motores"]);
         assert_eq!(i, None);

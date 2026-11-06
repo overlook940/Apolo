@@ -563,7 +563,7 @@ fn ayuda_corta() {
                 "Acepta las mismas opciones que cwebp {version}. Lista completa: apolo webp -longhelp"
             );
         }
-        Idioma::En => {
+        Idioma::En | Idioma::Zh => {
             println!("Usage:\n\n   apolo webp [options] -q quality input.png -o output.webp\n");
             println!(
                 "where quality is between 0 (poor) to 100 (very good). Typical value is around 80.\n"
@@ -576,7 +576,7 @@ fn ayuda_corta() {
 fn ayuda_larga() {
     match idioma::actual() {
         Idioma::Es => print!("{AYUDA_LARGA}"),
-        Idioma::En => print!("{AYUDA_LARGA_EN}"),
+        Idioma::En | Idioma::Zh => print!("{AYUDA_LARGA_EN}"),
     }
 }
 

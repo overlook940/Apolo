@@ -610,7 +610,8 @@
     "idiomaSistema": "Same as the system",
     "idiomas": {
       "es": "Español",
-      "en": "English"
+      "en": "English",
+      "zh": "简体中文"
     },
     "pestanas": {
       "etiqueta": "Settings sections",

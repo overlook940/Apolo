@@ -40,7 +40,8 @@ impl Default for Ajustes {
     }
 }
 
-/// «Idioma» en Ajustes › General: el del sistema, español o inglés.
+/// «Idioma» en Ajustes › General: el del sistema, español, inglés o chino
+/// simplificado.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PreferenciaIdioma {
@@ -48,6 +49,7 @@ pub enum PreferenciaIdioma {
     Sistema,
     Es,
     En,
+    Zh,
 }
 
 impl PreferenciaIdioma {
@@ -57,6 +59,7 @@ impl PreferenciaIdioma {
             PreferenciaIdioma::Sistema => idioma::del_sistema(),
             PreferenciaIdioma::Es => Idioma::Es,
             PreferenciaIdioma::En => Idioma::En,
+            PreferenciaIdioma::Zh => Idioma::Zh,
         }
     }
 }

@@ -6,11 +6,11 @@ use apolo_nucleo::presets::{self, PresetGuardado};
 use apolo_nucleo::{tr, trs};
 
 /// Un número ya escrito con punto, con la coma decimal en español: «1,5».
-/// En inglés se queda el punto.
+/// En inglés y en chino se queda el punto.
 pub fn decimal(s: String) -> String {
     match idioma::actual() {
         Idioma::Es => s.replace('.', ","),
-        Idioma::En => s,
+        Idioma::En | Idioma::Zh => s,
     }
 }
 

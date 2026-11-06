@@ -78,11 +78,12 @@ pub fn coma(n: f64, decimales: usize) -> String {
     decimal(format!("{n:.decimales$}"))
 }
 
-/// El separador decimal del idioma: coma en español, punto en inglés.
+/// El separador decimal del idioma: coma en español, punto en inglés y en
+/// chino.
 fn decimal(s: String) -> String {
     match apolo_nucleo::idioma::actual() {
         apolo_nucleo::idioma::Idioma::Es => s.replace('.', ","),
-        apolo_nucleo::idioma::Idioma::En => s,
+        apolo_nucleo::idioma::Idioma::En | apolo_nucleo::idioma::Idioma::Zh => s,
     }
 }
 

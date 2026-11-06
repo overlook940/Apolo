@@ -1,4 +1,5 @@
-//! El idioma de los textos de Apolo: español o inglés (ADR 0025).
+//! El idioma de los textos de Apolo: español, inglés o chino simplificado
+//! (ADR 0025).
 //!
 //! Cada texto visible lleva sus dos versiones en el mismo sitio, con [`tr!`]
 //! (con formato, da un `String`) o [`trs!`] (fijo, da un `&'static str`):
@@ -11,7 +12,9 @@
 //! ```
 //!
 //! El compilador exige las dos, y que usen los mismos datos: no hay dos
-//! catálogos que se puedan desincronizar.
+//! catálogos que se puedan desincronizar. El chino simplificado («zh») se
+//! apoya en los textos en inglés de estas macros: la interfaz, que sí tiene
+//! catálogo propio, es la que está traducida (ADR 0025).
 //!
 //! Hay un idioma para todo el proceso. Quien arranca lo pone con [`poner`]: la
 //! CLI con `--idioma` o [`del_sistema`], `apolo-mcp` con `APOLO_IDIOMA` o el del
@@ -27,25 +30,28 @@ use std::sync::atomic::{AtomicU8, Ordering};
 pub enum Idioma {
     Es,
     En,
+    Zh,
 }
 
 impl Idioma {
-    /// «es» o «en».
+    /// «es», «en» o «zh».
     pub fn codigo(self) -> &'static str {
         match self {
             Idioma::Es => "es",
             Idioma::En => "en",
+            Idioma::Zh => "zh",
         }
     }
 
-    /// De un código de idioma o de una locale: «es», «es_ES.UTF-8», «en-US»…
-    /// `None` si no es ni español ni inglés.
+    /// De un código de idioma o de una locale: «es», «es_ES.UTF-8», «en-US»,
+    /// «zh_CN»… `None` si no es español, inglés ni chino simplificado.
     pub fn de_codigo(texto: &str) -> Option<Idioma> {
         let t = texto.trim().to_ascii_lowercase();
         let base = t.split(['_', '-', '.', '@']).next().unwrap_or("");
         match base {
             "es" => Some(Idioma::Es),
             "en" => Some(Idioma::En),
+            "zh" => Some(Idioma::Zh),
             _ => None,
         }
     }
@@ -62,6 +68,7 @@ fn a_byte(i: Idioma) -> u8 {
     match i {
         Idioma::Es => 1,
         Idioma::En => 2,
+        Idioma::Zh => 3,
     }
 }
 
@@ -73,7 +80,11 @@ pub fn actual() -> Idioma {
     } else {
         ACTUAL.load(Ordering::Relaxed)
     };
-    if b == 2 { Idioma::En } else { Idioma::Es }
+    match b {
+        2 => Idioma::En,
+        3 => Idioma::Zh,
+        _ => Idioma::Es,
+    }
 }
 
 /// Hace `f` con el idioma `i` solo en este hilo: para probar los textos de un
@@ -117,12 +128,16 @@ macro_rules! tr {
         match $crate::idioma::actual() {
             $crate::idioma::Idioma::Es => format!($es),
             $crate::idioma::Idioma::En => format!($en),
+            // El chino simplificado se apoya en el inglés (ADR 0025).
+            $crate::idioma::Idioma::Zh => format!($en),
         }
     };
     ($es:literal, $en:literal, $($datos:tt)+) => {
         match $crate::idioma::actual() {
             $crate::idioma::Idioma::Es => format!($es, $($datos)+),
             $crate::idioma::Idioma::En => format!($en, $($datos)+),
+            // El chino simplificado se apoya en el inglés (ADR 0025).
+            $crate::idioma::Idioma::Zh => format!($en, $($datos)+),
         }
     };
 }
@@ -135,6 +150,8 @@ macro_rules! trs {
         match $crate::idioma::actual() {
             $crate::idioma::Idioma::Es => $es,
             $crate::idioma::Idioma::En => $en,
+            // El chino simplificado se apoya en el inglés (ADR 0025).
+            $crate::idioma::Idioma::Zh => $en,
         }
     };
 }
@@ -151,6 +168,9 @@ mod pruebas {
             ("es-MX", Some(Idioma::Es)),
             ("EN", Some(Idioma::En)),
             ("en_GB.UTF-8@euro", Some(Idioma::En)),
+            ("zh", Some(Idioma::Zh)),
+            ("zh_CN.UTF-8", Some(Idioma::Zh)),
+            ("zh-Hant", Some(Idioma::Zh)),
             ("fr_FR.UTF-8", None),
             ("", None),
         ] {
@@ -168,6 +188,10 @@ mod pruebas {
         en_este_hilo(Idioma::Es, || {
             assert_eq!(tr!("{} fotos", "{} photos", n), "3 fotos");
             assert_eq!(trs!("Cancelado", "Cancelled"), "Cancelado");
+        });
+        en_este_hilo(Idioma::Zh, || {
+            assert_eq!(tr!("{n} fotos", "{n} photos"), "3 photos");
+            assert_eq!(trs!("Cancelado", "Cancelled"), "Cancelled");
         });
     }
 }

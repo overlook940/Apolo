@@ -28,7 +28,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue" alt="GPLv3"></a>
 </p>
 
-<p align="center"><a href="https://apolo.webcafeina.com/en/">apolo.webcafeina.com</a> · <a href="https://apolo.webcafeina.com/en/guides/">Guides</a> · <a href="https://apolo.webcafeina.com/en/compare/">Comparisons</a> · <a href="README.md">Español</a></p>
+<p align="center"><a href="https://apolo.webcafeina.com/en/">apolo.webcafeina.com</a> · <a href="https://apolo.webcafeina.com/en/guides/">Guides</a> · <a href="https://apolo.webcafeina.com/en/compare/">Comparisons</a> · <a href="README.md">简体中文</a> · <a href="README.es.md">Español</a></p>
 
 <p align="center">
   <picture>

@@ -6,11 +6,12 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "./en.json";
 import es from "./es.json";
+import zh from "./zh.json";
 
-export type Idioma = "es" | "en";
+export type Idioma = "es" | "en" | "zh";
 
 void i18n.use(initReactI18next).init({
-  resources: { es: { translation: es }, en: { translation: en } },
+  resources: { es: { translation: es }, en: { translation: en }, zh: { translation: zh } },
   lng: "es",
   fallbackLng: "es",
   interpolation: { escapeValue: false },

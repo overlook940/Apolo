@@ -610,7 +610,8 @@
     "idiomaSistema": "Igual que el sistema",
     "idiomas": {
       "es": "Español",
-      "en": "English"
+      "en": "English",
+      "zh": "简体中文"
     },
     "pestanas": {
       "etiqueta": "Secciones de Ajustes",

@@ -15,7 +15,7 @@ use rmcp::ServiceExt;
 
 fn main() -> ExitCode {
     apolo_nucleo::memoria::preparar();
-    // El idioma de los textos (ADR 0025): APOLO_IDIOMA (es o en), y si no, el
+    // El idioma de los textos (ADR 0025): APOLO_IDIOMA (es, en o zh), y si no, el
     // del sistema.
     let lengua = std::env::var("APOLO_IDIOMA")
         .ok()

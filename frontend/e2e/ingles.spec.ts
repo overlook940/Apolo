@@ -37,12 +37,12 @@ test("se cambia a inglés en Ajustes, y toda la interfaz y los errores de Rust s
   await page.getByRole("button", { name: "Ajustes" }).click();
   const idioma = page.getByTestId("idioma").getByRole("combobox");
   await expect(idioma).toHaveValue("sistema");
-  await expect(idioma.locator("option")).toHaveText(["Igual que el sistema", "Español", "English"]);
+  await expect(idioma.locator("option")).toHaveText(["Igual que el sistema", "Español", "English", "简体中文"]);
   await idioma.selectOption("en");
 
   // Cambia en el acto, sin recargar.
   await expect(page.getByRole("heading", { name: "Language" })).toBeVisible();
-  await expect(idioma.locator("option")).toHaveText(["Same as the system", "Español", "English"]);
+  await expect(idioma.locator("option")).toHaveText(["Same as the system", "Español", "English", "简体中文"]);
   await expect(page.getByRole("radio", { name: "General" })).toHaveAttribute("aria-checked", "true");
   await expect(page.getByRole("heading", { name: "About" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Updates" })).toBeVisible();

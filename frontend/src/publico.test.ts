@@ -23,6 +23,7 @@ const todos = (carpeta: string): string[] =>
 const PUBLICOS = [
   "README.md",
   "README.en.md",
+  "README.es.md",
   ...todos("web/src"),
   ...de("frontend/src/i18n", (f) => f.endsWith(".json")),
   ...de("src-tauri", (f) => /^tauri.*\.json$/.test(f)),

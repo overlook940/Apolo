@@ -442,6 +442,9 @@ function ElegirIdioma() {
           <option value="en" lang="en">
             {t("ajustes.idiomas.en")}
           </option>
+          <option value="zh" lang="zh-Hans">
+            {t("ajustes.idiomas.zh")}
+          </option>
         </select>
   );
 
